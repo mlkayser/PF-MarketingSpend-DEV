@@ -1,9 +1,6 @@
 'use strict';
 
-
-
 var totalClubs;
-
 
 //Imports
 var constants = require('../constants');
@@ -46,8 +43,7 @@ router.post('/', function(req, res) {
     //     ]
     // };
     
-    var input = req.body;
-    
+    var input = req.body;   
     console.log(input);
     
     totalClubs = req.body.clubs.length;
@@ -58,12 +54,7 @@ router.post('/', function(req, res) {
     addRows(wb, WORKSHEET_NAME, SPEND_CATEGORIES, input.clubs);
     addFormat(wb, WORKSHEET_NAME);
     
-    
-    
-    
-    
-    var fn = './uploads/' + input.ownershipGroupNumber + '-template-' + new Date().toISOString().substr(0,10) + '.xlsx';
-    
+    var fn = './uploads/' + input.ownershipGroupNumber + '-template-' + new Date().toISOString().substr(0,10) + '.xlsx';   
     
     wb.xlsx.writeFile(fn)
         .then(function() {
@@ -117,17 +108,12 @@ function constructColumns(workbook, sheetName, clubs){
 }
 
 function addRows(workbook, sheetName, categories, clubs){
-    var sheet = workbook.getWorksheet(sheetName);
+    var sheet = workbook.getWorksheet(sheetName);       
     
-    
-    
-    var nameRow = {tactic: 'Tactic'};
-    
+    var nameRow = {tactic: 'Tactic'};    
     for (var h = 0; h < totalClubs; h++){
         nameRow[clubs[h].clubId] = clubs[h].clubId;
-    }
-    
-    
+    }       
     sheet.addRow(nameRow);
     
     for(var i = 0; i < categories.length; i++){
@@ -142,7 +128,7 @@ function addRows(workbook, sheetName, categories, clubs){
     }
     
     
-    
+    /*
     var totalRow = {};
     totalRow.tactic = 'Total';
     var columnLetter = 'A';
@@ -155,21 +141,22 @@ function addRows(workbook, sheetName, categories, clubs){
             formula: formulaString
         };
     }
-    
     sheet.addRow(totalRow);
+    */
     
     //sheet.addRow({tactic: 'Total', id: 'total'});
-    sheet.addRow({tactic: ''});
+    // sheet.addRow({tactic: ''}); // MLK update
     //sheet.addRow({tactic: 'Promotional Club Expense'});
     
+    /* MLK update
     var promo = {};
     promo.tactic = 'Promotional Club Expense';
     for (var l = 0; l < totalClubs; l++){
         promo[clubs[l].clubId] = 0;
     }
     sheet.addRow(promo);
+    */
 }
-
 
 function addFormat(workbook, sheetName){
     var sheet = workbook.getWorksheet(sheetName);
