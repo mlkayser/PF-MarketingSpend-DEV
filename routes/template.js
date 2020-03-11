@@ -41,6 +41,7 @@ router.post('/', function(req, res) {
 });
 
 function createExcelTemplate(input) {
+    /* 
     var baseWs = [
         {Tactic:'Television'},
         {Tactic:'Streaming Television'},
@@ -66,9 +67,12 @@ function createExcelTemplate(input) {
         {Tactic:'Total'},
         {Tactic:''},
         {Tactic:'Promotional Club Expense'}];
+    */
+    var baseWs = [{Tactic:'Total Expenses'}]; // MLK update 3/2020
     var baseHeader = {header:["Tactic"]};
 
     // One column for each club
+    /* 
     _.forEach(input.clubs, function(club) {
         _.find(baseWs, {Tactic:'Television'})[club.clubId] = 0;
         _.find(baseWs, {Tactic:'Streaming Television'})[club.clubId] = 0;
@@ -93,8 +97,13 @@ function createExcelTemplate(input) {
         _.find(baseWs, {Tactic:'Reoccurring Co-Op Contribution'})[club.clubId] = 0;
         _.find(baseWs, {Tactic:'Promotional Club Expense'})[club.clubId] = 0;
         baseHeader.header.push(club.clubId);
+    });*/
+    // MLK update 3/2020
+    _.forEach(input.clubs, function(club) {
+        _.find(baseWs, {Tactic:'Total Expenses'})[club.clubId] = 0;
+        baseHeader.header.push(club.clubId);
     });
-    
+
     //Create the Workbook
     var workbook = new Excel.Workbook();
     var ws = workbook.addWorksheet('My Sheet');
@@ -104,6 +113,7 @@ function createExcelTemplate(input) {
     var colChar = 'B';
     
     // Sum Rows
+    /* MLK update
     _.forEach(input.clubs, function(club) {
         // // Comment on Club ID
         // ws[colChar + '1'].c = [ { a: 'PlanetFitness', t: 'Club Name here'} ];
@@ -116,15 +126,15 @@ function createExcelTemplate(input) {
         
         colChar = nextChar(colChar);
     });
-    
-    
+    */  
 
     // Formatting
     var fmt = '$0.00'; // or '"$"#,##0.00_);[Red]\\("$"#,##0.00\\)' or any Excel number format
 
     /* get worksheet range */
     var range = XLSX.utils.decode_range(ws['!ref']);
-    var r = { s: { c: 1, r: 1 }, e: { c: 6, r: 23 } };
+    // update var r = { s: { c: 1, r: 1 }, e: { c: 6, r: 23 } };
+    var r = { s: { c: 1, r: 1 }, e: { c: 6, r: 2 } }; // MLK update
     for(var i = range.s.r + 1; i <= range.e.r; ++i) {
         for(var x = range.s.c + 1; x <= range.e.c; ++x) {
             /* find the data cell (range.s.r + 1 skips the header row of the worksheet) */
