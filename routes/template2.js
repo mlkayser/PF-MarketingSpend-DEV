@@ -173,7 +173,7 @@ function addFormat(workbook, sheetName){
     
     var headerRow = sheet.getRow(1);
     headerRow.alignment = {
-        textRotation: 75
+        textRotation:45
     };
     headerRow.font = {
         bold: true
