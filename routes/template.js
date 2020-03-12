@@ -69,7 +69,7 @@ function createExcelTemplate(input) {
         {Tactic:'Promotional Club Expense'}];
     */
     var baseWs = [{Tactic:'Total Expenses'}]; // MLK update 3/2020
-    var baseHeader = {header:["Tactic"]};
+    var baseHeader = {header:["TacticNum1"]};
 
     // One column for each club
     /* 
