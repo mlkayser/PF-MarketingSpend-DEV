@@ -17,16 +17,17 @@ var SPEND_CATEGORIES = constants.SPEND_CATEGORIES;
 var TEMPLATE_VERSION = constants.TEMPLATE_VERSION;
 
 //Set up CORS so the internet will work as I desire
-router.options('*', cors());
+//router.options('*', cors()); MLK edited
 
 //Handle Post requests sent to the main route
 router.post('/', function(req, res) {
     // CORS
     if (req.method === "OPTIONS") {
         res.header('Access-Control-Allow-Origin', req.headers.origin);
-    } else {
-        res.header('Access-Control-Allow-Origin', '*');
-    }
+    } 
+    /*else { MKL edited
+        res.header('Access-Control-Allow-Origin', '*'); 
+    }*/
     
     console.log('CORS Okay');
     
