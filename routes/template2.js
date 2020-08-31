@@ -1,6 +1,9 @@
 'use strict';
 
+
+
 var totalClubs;
+
 
 //Imports
 var constants = require('../constants');
@@ -17,17 +20,16 @@ var SPEND_CATEGORIES = constants.SPEND_CATEGORIES;
 var TEMPLATE_VERSION = constants.TEMPLATE_VERSION;
 
 //Set up CORS so the internet will work as I desire
-//router.options('*', cors()); MLK edited
+router.options('*', cors());
 
 //Handle Post requests sent to the main route
 router.post('/', function(req, res) {
     // CORS
     if (req.method === "OPTIONS") {
         res.header('Access-Control-Allow-Origin', req.headers.origin);
-    } 
-    /*else { MKL edited
-        res.header('Access-Control-Allow-Origin', '*'); 
-    }*/
+    } else {
+        res.header('Access-Control-Allow-Origin', '*');
+    }
     
     console.log('CORS Okay');
     
@@ -44,7 +46,8 @@ router.post('/', function(req, res) {
     //     ]
     // };
     
-    var input = req.body;   
+    var input = req.body;
+    
     console.log(input);
     
     totalClubs = req.body.clubs.length;
@@ -55,7 +58,12 @@ router.post('/', function(req, res) {
     addRows(wb, WORKSHEET_NAME, SPEND_CATEGORIES, input.clubs);
     addFormat(wb, WORKSHEET_NAME);
     
-    var fn = './uploads/' + input.ownershipGroupNumber + '-template-' + new Date().toISOString().substr(0,10) + '.xlsx';   
+    
+    
+    
+    
+    var fn = './uploads/' + input.ownershipGroupNumber + '-template-' + new Date().toISOString().substr(0,10) + '.xlsx';
+    
     
     wb.xlsx.writeFile(fn)
         .then(function() {
@@ -109,12 +117,17 @@ function constructColumns(workbook, sheetName, clubs){
 }
 
 function addRows(workbook, sheetName, categories, clubs){
-    var sheet = workbook.getWorksheet(sheetName);       
+    var sheet = workbook.getWorksheet(sheetName);
     
-    var nameRow = {tactic: 'Tactic'};    
+    
+    
+    var nameRow = {tactic: 'Tactic'};
+    
     for (var h = 0; h < totalClubs; h++){
         nameRow[clubs[h].clubId] = clubs[h].clubId;
-    }       
+    }
+    
+    
     sheet.addRow(nameRow);
     
     for(var i = 0; i < categories.length; i++){
@@ -129,7 +142,7 @@ function addRows(workbook, sheetName, categories, clubs){
     }
     
     
-    /*
+    
     var totalRow = {};
     totalRow.tactic = 'Total';
     var columnLetter = 'A';
@@ -142,22 +155,21 @@ function addRows(workbook, sheetName, categories, clubs){
             formula: formulaString
         };
     }
+    
     sheet.addRow(totalRow);
-    */
     
     //sheet.addRow({tactic: 'Total', id: 'total'});
-    // sheet.addRow({tactic: ''}); // MLK update
+    sheet.addRow({tactic: ''});
     //sheet.addRow({tactic: 'Promotional Club Expense'});
     
-    /* MLK update
     var promo = {};
     promo.tactic = 'Promotional Club Expense';
     for (var l = 0; l < totalClubs; l++){
         promo[clubs[l].clubId] = 0;
     }
     sheet.addRow(promo);
-    */
 }
+
 
 function addFormat(workbook, sheetName){
     var sheet = workbook.getWorksheet(sheetName);
@@ -174,7 +186,7 @@ function addFormat(workbook, sheetName){
     
     var headerRow = sheet.getRow(1);
     headerRow.alignment = {
-        textRotation:45
+        textRotation: 45
     };
     headerRow.font = {
         bold: true
